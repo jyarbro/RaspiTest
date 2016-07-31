@@ -7,14 +7,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaspiTest3", "RaspiTest3.cs
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|ARM = Release|ARM
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A2466F29-C13D-4F64-AADE-48C123481704}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{A2466F29-C13D-4F64-AADE-48C123481704}.Debug|ARM.ActiveCfg = Debug|ARM
 		{A2466F29-C13D-4F64-AADE-48C123481704}.Debug|ARM.Build.0 = Debug|ARM
 		{A2466F29-C13D-4F64-AADE-48C123481704}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -24,6 +27,7 @@ Global
 		{A2466F29-C13D-4F64-AADE-48C123481704}.Debug|x86.ActiveCfg = Debug|x86
 		{A2466F29-C13D-4F64-AADE-48C123481704}.Debug|x86.Build.0 = Debug|x86
 		{A2466F29-C13D-4F64-AADE-48C123481704}.Debug|x86.Deploy.0 = Debug|x86
+		{A2466F29-C13D-4F64-AADE-48C123481704}.Release|Any CPU.ActiveCfg = Release|x86
 		{A2466F29-C13D-4F64-AADE-48C123481704}.Release|ARM.ActiveCfg = Release|ARM
 		{A2466F29-C13D-4F64-AADE-48C123481704}.Release|ARM.Build.0 = Release|ARM
 		{A2466F29-C13D-4F64-AADE-48C123481704}.Release|ARM.Deploy.0 = Release|ARM
