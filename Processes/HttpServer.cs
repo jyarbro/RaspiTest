@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 
-namespace RaspiTest3.Processes {
+namespace RaspiTest.Processes {
 	public sealed class HttpServer {
 		const uint BufferSize = 8192;
 		const int Port = 80;

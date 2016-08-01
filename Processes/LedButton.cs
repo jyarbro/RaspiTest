@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Windows.Devices.Gpio;
 
-namespace RaspiTest3.Processes {
+namespace RaspiTest.Processes {
 	internal class LedButton {
 		const int ID_INPUT_PIN = 25;
 		const int ID_OUTPUT_PIN = 21;

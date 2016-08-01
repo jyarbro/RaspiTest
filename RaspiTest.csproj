@@ -7,8 +7,8 @@
     <ProjectGuid>{A2466F29-C13D-4F64-AADE-48C123481704}</ProjectGuid>
     <OutputType>winmdobj</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RaspiTest3</RootNamespace>
-    <AssemblyName>RaspiTest3</AssemblyName>
+    <RootNamespace>RaspiTest</RootNamespace>
+    <AssemblyName>RaspiTest</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>

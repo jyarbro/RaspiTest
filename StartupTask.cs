@@ -1,7 +1,7 @@
-﻿using RaspiTest3.Processes;
+﻿using RaspiTest.Processes;
 using Windows.ApplicationModel.Background;
 
-namespace RaspiTest3 {
+namespace RaspiTest {
 	public sealed class StartupTask : IBackgroundTask
     {
         public async void Run(IBackgroundTaskInstance taskInstance)

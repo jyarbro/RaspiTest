@@ -6,7 +6,7 @@ using Microsoft.IoT.Devices.Adc;
 using Microsoft.IoT.Devices.Sensors;
 using Windows.Devices.Gpio;
 
-namespace RaspiTest3.Processes {
+namespace RaspiTest.Processes {
 	internal class TemperatureSensor {
 		internal string Output { get; set; }
 
