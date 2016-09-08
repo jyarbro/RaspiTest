@@ -5,16 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
+using RaspiTest4.Sensors;
 
-namespace RaspiTest.Processes {
+namespace RaspiTest4.Processes {
 	public sealed class HttpServer {
 		const uint BufferSize = 8192;
 		const int Port = 80;
 
 		StreamSocketListener StreamSocketListener;
-		TemperatureSensor SpiActor;
+		AnalogSensorBase SpiActor;
 
-		internal async Task<bool> InitializeAsync() {
+		internal async Task<bool> InitializeAsync(AnalogSensorBase analogSensor) {
+			SpiActor = analogSensor;
+
 			StreamSocketListener = new StreamSocketListener();
 			await StreamSocketListener.BindServiceNameAsync(Port.ToString()).AsTask();
 
@@ -24,7 +27,6 @@ namespace RaspiTest.Processes {
 				await RespondAsync(args.Socket, responseBodyStream);
 			};
 
-			SpiActor = new TemperatureSensor();
 			await SpiActor.InitializeAsync();
 
 			return true;
