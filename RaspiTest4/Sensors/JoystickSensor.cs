@@ -13,7 +13,7 @@ namespace RaspiTest4.Sensors {
 		int OutputMidPin = 18;
 		int OutputRightPin = 19;
 
-		int Frame = 5;
+		int Frame = 50;
 
 		GpioPin OutputLeft { get; set; }
 		GpioPin OutputMid { get; set; }
@@ -44,28 +44,30 @@ namespace RaspiTest4.Sensors {
 		}
 
 		internal override void Sensor_ReadingChanged(IAnalogSensor sender, AnalogSensorReadingChangedEventArgs args) {
-			Total += args.Reading.Value;
-			Readings.Enqueue(args.Reading.Value);
+			var currentValue = args.Reading.Value;
+
+			Total += currentValue;
+			Readings.Enqueue(currentValue);
 
 			if (Readings.Count > Frame)
 				Total -= Readings.Dequeue();
 
 			var average = Total / Frame;
 
-			if (average < 127.9) {
-				Output = "Left";
+			if (currentValue < average) {
+				Output = $"Left [{currentValue}] [{average}]";
 				OutputLeft.Write(GpioPinValue.High);
 				OutputMid.Write(GpioPinValue.Low);
 				OutputRight.Write(GpioPinValue.Low);
 			}
-			else if (average > 128.1) {
-				Output = "Right";
+			else if (currentValue > average) {
+				Output = $"Right [{currentValue}] [{average}]";
 				OutputLeft.Write(GpioPinValue.Low);
 				OutputMid.Write(GpioPinValue.Low);
 				OutputRight.Write(GpioPinValue.High);
 			}
 			else {
-				Output = "Mid";
+				Output = $"Mid [{currentValue}] [{average}]";
 				OutputLeft.Write(GpioPinValue.Low);
 				OutputMid.Write(GpioPinValue.High);
 				OutputRight.Write(GpioPinValue.Low);

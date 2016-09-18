@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaspiTest4", "RaspiTest4\RaspiTest4.csproj", "{A478A13A-F42F-4386-AF70-E0356DFD9DE0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Joystick", "Joystick\Joystick.csproj", "{373593E7-D42F-4354-9B5A-3866AD013FBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -33,6 +35,24 @@ Global
 		{A478A13A-F42F-4386-AF70-E0356DFD9DE0}.Release|x86.ActiveCfg = Release|x86
 		{A478A13A-F42F-4386-AF70-E0356DFD9DE0}.Release|x86.Build.0 = Release|x86
 		{A478A13A-F42F-4386-AF70-E0356DFD9DE0}.Release|x86.Deploy.0 = Release|x86
+		{373593E7-D42F-4354-9B5A-3866AD013FBB}.Debug|ARM.ActiveCfg = Debug|ARM
+		{373593E7-D42F-4354-9B5A-3866AD013FBB}.Debug|ARM.Build.0 = Debug|ARM
+		{373593E7-D42F-4354-9B5A-3866AD013FBB}.Debug|ARM.Deploy.0 = Debug|ARM
+		{373593E7-D42F-4354-9B5A-3866AD013FBB}.Debug|x64.ActiveCfg = Debug|x64
+		{373593E7-D42F-4354-9B5A-3866AD013FBB}.Debug|x64.Build.0 = Debug|x64
+		{373593E7-D42F-4354-9B5A-3866AD013FBB}.Debug|x64.Deploy.0 = Debug|x64
+		{373593E7-D42F-4354-9B5A-3866AD013FBB}.Debug|x86.ActiveCfg = Debug|x86
+		{373593E7-D42F-4354-9B5A-3866AD013FBB}.Debug|x86.Build.0 = Debug|x86
+		{373593E7-D42F-4354-9B5A-3866AD013FBB}.Debug|x86.Deploy.0 = Debug|x86
+		{373593E7-D42F-4354-9B5A-3866AD013FBB}.Release|ARM.ActiveCfg = Release|ARM
+		{373593E7-D42F-4354-9B5A-3866AD013FBB}.Release|ARM.Build.0 = Release|ARM
+		{373593E7-D42F-4354-9B5A-3866AD013FBB}.Release|ARM.Deploy.0 = Release|ARM
+		{373593E7-D42F-4354-9B5A-3866AD013FBB}.Release|x64.ActiveCfg = Release|x64
+		{373593E7-D42F-4354-9B5A-3866AD013FBB}.Release|x64.Build.0 = Release|x64
+		{373593E7-D42F-4354-9B5A-3866AD013FBB}.Release|x64.Deploy.0 = Release|x64
+		{373593E7-D42F-4354-9B5A-3866AD013FBB}.Release|x86.ActiveCfg = Release|x86
+		{373593E7-D42F-4354-9B5A-3866AD013FBB}.Release|x86.Build.0 = Release|x86
+		{373593E7-D42F-4354-9B5A-3866AD013FBB}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
