@@ -8,7 +8,7 @@ using Microsoft.IoT.Devices.Input;
 using Windows.Devices.Gpio;
 
 namespace Joystick {
-	internal class Joystick {
+	public class Joystick {
 		const uint REPORT_INTERVAL = 250;
 
 		const int PIN_LED_LEFT = 17;
@@ -25,7 +25,7 @@ namespace Joystick {
 		double X;
 		double Y;
 
-		internal async Task InitializeAsync() {
+		public async Task InitializeAsync() {
 			var adcManager = new AdcProviderManager();
 
 			adcManager.Providers.Add(
@@ -49,11 +49,12 @@ namespace Joystick {
 			InitializeLeds();
 		}
 
-		private void Thumbstick_ReadingChanged(IThumbstick sender, ThumbstickReadingChangedEventArgs args) {
+		void Thumbstick_ReadingChanged(IThumbstick sender, ThumbstickReadingChangedEventArgs args) {
 			X = args.Reading.XAxis;
+			UpdateLeds();
 		}
 
-		internal void InitializeLeds() {
+		void InitializeLeds() {
 			GpioController = GpioController.GetDefault();
 
 			LedLeft = GpioController.OpenPin(PIN_LED_LEFT);
@@ -70,7 +71,7 @@ namespace Joystick {
 				LedRight.SetDriveMode(GpioPinDriveMode.Output);
 		}
 
-		internal void UpdateLeds() {
+		void UpdateLeds() {
 			// var currentValue = (Channel0 + Channel1) / 2;
 
 			Debug.WriteLine($"X {X}");

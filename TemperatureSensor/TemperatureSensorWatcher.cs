@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Windows.Devices.Gpio;
 using Microsoft.IoT.DeviceCore.Adc;
 using Microsoft.IoT.DeviceCore.Sensors;
 using Microsoft.IoT.Devices.Adc;
 using Microsoft.IoT.Devices.Sensors;
-using Windows.Devices.Gpio;
 
-namespace RaspiTest4.Sensors {
-	internal abstract class AnalogSensorBase {
-		internal GpioController GpioController { get; set; }
-		internal string Output { get; set; }
+namespace TemperatureSensor {
+	public class TemperatureSensorWatcher {
+		public GpioController GpioController { get; set; }
+		public string Output { get; set; }
 
-		internal virtual int PinChipSelect { get; }
-		internal virtual int PinClock { get; }
-		internal virtual int PinData { get; }
+		public int PinChipSelect { get; } = 18;
+		public int PinClock { get; } = 23;
+		public int PinData { get; } = 24;
 
-		internal virtual uint ReportInterval { get; set; } = 250;
+		public uint ReportInterval { get; set; } = 250;
 
-		internal virtual async Task InitializeAsync() {
+		public async Task InitializeAsync() {
 			GpioController = GpioController.GetDefault();
 
 			var adcManager = new AdcProviderManager();
@@ -40,6 +40,10 @@ namespace RaspiTest4.Sensors {
 			sensor.ReadingChanged += Sensor_ReadingChanged;
 		}
 
-		internal abstract void Sensor_ReadingChanged(IAnalogSensor sender, AnalogSensorReadingChangedEventArgs args);
+		public void Sensor_ReadingChanged(IAnalogSensor sender, AnalogSensorReadingChangedEventArgs args) {
+			var tempC = Math.Round(((255 - args.Reading.Value) - 121) * 0.21875, 1) + 21.8;
+
+			Output = $"{tempC} C";
+		}
 	}
 }
