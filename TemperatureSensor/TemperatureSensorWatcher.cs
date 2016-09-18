@@ -8,14 +8,15 @@ using Microsoft.IoT.Devices.Sensors;
 
 namespace TemperatureSensor {
 	internal class TemperatureSensorWatcher {
-		public GpioController GpioController { get; set; }
+		const uint REPORT_INTERVAL = 250;
+
+		const int PIN_CHIP_SELECT = 18;
+		const int PIN_CLOCK = 23;
+		const int PIN_DATA = 24;
+
 		public string Output { get; set; }
 
-		public int PinChipSelect { get; } = 18;
-		public int PinClock { get; } = 23;
-		public int PinData { get; } = 24;
-
-		public uint ReportInterval { get; set; } = 250;
+		GpioController GpioController { get; set; }
 
 		public async Task InitializeAsync() {
 			GpioController = GpioController.GetDefault();
@@ -23,18 +24,22 @@ namespace TemperatureSensor {
 			var adcManager = new AdcProviderManager();
 
 			adcManager.Providers.Add(
-				new ADC0832() {
-					ChipSelectPin = GpioController.OpenPin(PinChipSelect),
-					ClockPin = GpioController.OpenPin(PinClock),
-					DataPin = GpioController.OpenPin(PinData),
-				}
+				new MCP3008()
 			);
+
+			//adcManager.Providers.Add(
+			//	new ADC0832() {
+			//		ChipSelectPin = GpioController.OpenPin(PIN_CHIP_SELECT),
+			//		ClockPin = GpioController.OpenPin(PIN_CLOCK),
+			//		DataPin = GpioController.OpenPin(PIN_DATA),
+			//	}
+			//);
 
 			var adcControllers = await adcManager.GetControllersAsync();
 
 			var sensor = new AnalogSensor() {
 				AdcChannel = adcControllers[0].OpenChannel(0),
-				ReportInterval = ReportInterval,
+				ReportInterval = REPORT_INTERVAL,
 			};
 
 			sensor.ReadingChanged += Sensor_ReadingChanged;
@@ -43,7 +48,7 @@ namespace TemperatureSensor {
 		public void Sensor_ReadingChanged(IAnalogSensor sender, AnalogSensorReadingChangedEventArgs args) {
 			var tempC = Math.Round(((255 - args.Reading.Value) - 121) * 0.21875, 1) + 21.8;
 
-			Output = $"{tempC} C";
+			Output = $@"{DateTime.Now.ToString("hh:mm")}: {tempC} C [{args.Reading.Value}]";
 		}
 	}
 }

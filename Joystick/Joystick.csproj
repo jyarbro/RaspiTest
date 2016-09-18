@@ -131,15 +131,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.IoT.DeviceCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.IoT.DeviceCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=ARM">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\iot-devices-master\Lib\Microsoft.IoT.DeviceCore\bin\ARM\Release\Microsoft.IoT.DeviceCore.winmd</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IoT.DeviceHelpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Microsoft.IoT.DeviceHelpers">
       <HintPath>..\..\iot-devices-master\Lib\Microsoft.IoT.DeviceHelpers\bin\ARM\Release\Microsoft.IoT.DeviceHelpers.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IoT.Devices, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.IoT.Devices, Version=1.0.0.0, Culture=neutral, processorArchitecture=ARM">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\iot-devices-master\Lib\Microsoft.IoT.Devices\bin\ARM\Release\Microsoft.IoT.Devices.winmd</HintPath>
     </Reference>
