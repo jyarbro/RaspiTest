@@ -9,8 +9,8 @@ namespace Joystick {
 			var joystick = new Joystick();
 			await joystick.InitializeAsync();
 
-			var timer = DateTime.Now;
-			while (timer < DateTime.Now.AddMinutes(5)) { }
+			var timeout = DateTime.Now.AddMinutes(5);
+			while (DateTime.Now < timeout) { }
 
 			deferral.Complete();
 		}

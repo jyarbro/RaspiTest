@@ -18,8 +18,8 @@ namespace TemperatureSensor {
 				WebServer.ResponseBuffer.Add(SensorWatcher.Output);
 			};
 
-			var timer = DateTime.Now;
-			while (timer < DateTime.Now.AddMinutes(5)) { }
+			var timeout = DateTime.Now.AddMinutes(5);
+			while (DateTime.Now < timeout) { }
 
 			deferral.Complete();
 		}
