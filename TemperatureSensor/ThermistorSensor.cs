@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Threading.Tasks;
+﻿using System;
 using Windows.Devices.Adc;
 using Windows.Foundation;
 using Microsoft.IoT.DeviceCore;
@@ -9,7 +8,12 @@ using Microsoft.IoT.Devices.Sensors;
 using UnitsNet;
 
 namespace TemperatureSensor {
-	public sealed class AnalogTemperatureSensor : ITemperatureSensor, IScheduledDevice {
+	public sealed class ThermistorSensor : ITemperatureSensor, IScheduledDevice {
+		const int THERMISTOR_BETA = 3950;
+		const int PULLUP_RESISTANCE = 10000;
+		const double VREF = 3.3;
+		const double ABSOLUTE_ZERO = 273.15;
+
 		public event TypedEventHandler<ITemperatureSensor, ITemperatureReading> ReadingChanged {
 			add {
 				return _ReadingChanged.Add(value);
@@ -39,23 +43,13 @@ namespace TemperatureSensor {
 			}
 		}
 
-		[DefaultValue(400d)]
-		public double ZeroDegreeOffset { get; set; } = 400;
-
-		[DefaultValue(3300)]
-		public int ReferenceMilliVolts { get; set; } = 3300;
-
-		[DefaultValue(20d)]
-		public double MillivoltsPerDegree { get; set; } = 20;
-
-		[DefaultValue(0d)]
-		public double CalibrationOffset { get; set; } = 0;
-
 		AnalogSensor Sensor { get; } = new AnalogSensor();
 
 		TemperatureReading CurrentReading { get; set; } = new TemperatureReading(Temperature.Zero);
 
-		public AnalogTemperatureSensor() {
+		bool Initialized { get; set; }
+
+		public ThermistorSensor() {
 			_ReadingChanged = new ObservableEvent<ITemperatureSensor, ITemperatureReading>(firstAdded: OnFirstAdded, lastRemoved: OnLastRemoved);
 		}
 
@@ -72,36 +66,31 @@ namespace TemperatureSensor {
 			Sensor.Dispose();
 		}
 
+		public void Initialize() {
+			if (Sensor.AdcChannel == null)
+				throw new MissingIoException(nameof(AdcChannel));
+
+			Initialized = true;
+		}
+
 		void Update(AnalogSensorReading sensorReading) {
-			var averageRatio = 0D;
-			var totalReads = 5;
-			
-			if (sensorReading != null) {
-				averageRatio = sensorReading.Ratio;
-				totalReads = 6;
-			}
+			if (!Initialized)
+				throw new Exception("Sensor not initialized.");
 
-			// Calculate average
-			for (int i = 0; i < totalReads; i++) {
-				averageRatio += Sensor.GetCurrentReading().Ratio;
-				Task.Delay(1).Wait();
-			}
+			// Inspired by https://www.sunfounder.com/learn/sensor-kit-v2-0-for-raspberry-pi-b-plus/lesson-18-temperature-sensor-sensor-kit-v2-0-for-b-plus.html
 
-			var ratio = averageRatio / totalReads;
+			var volts = VREF * sensorReading.Value / 255;
+			var ohms = PULLUP_RESISTANCE * volts / (VREF - volts);
+			var lnOhms = Math.Log(ohms / PULLUP_RESISTANCE);
 
-			// Multiply by reference
-			var milliVolts = ratio * ReferenceMilliVolts;
+			var celsius = 1 / ((lnOhms / THERMISTOR_BETA) + (1 / (ABSOLUTE_ZERO + 25)));
+			celsius = celsius - ABSOLUTE_ZERO;
 
-			// Convert to Celsius
-			double celsius = ((milliVolts - ZeroDegreeOffset) / MillivoltsPerDegree) + CalibrationOffset;
-
-			// ADC0832
-//			var tempC = Math.Round(((255 - reading.Value) - 121) * 0.21875, 1) + 21.8;
+			var temperature = Temperature.FromDegreesCelsius(celsius);
+			var temperatureReading = new TemperatureReading(temperature);
 
 			// Update current value
 			lock (CurrentReading) {
-				var temperature = Temperature.FromDegreesCelsius(celsius);
-				var temperatureReading = new TemperatureReading(temperature);
 				CurrentReading = temperatureReading;
 			}
 
