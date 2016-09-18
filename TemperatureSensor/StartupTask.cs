@@ -14,7 +14,7 @@ namespace TemperatureSensor {
 
 			await WebServer.InitializeAsync();
 
-			WebServer.RequestHandler += (object sender, string request) {
+			WebServer.RequestHandler += (object sender, string request) => {
 				WebServer.ResponseBuffer.Add(SensorWatcher.Output);
 			};
 
