@@ -7,9 +7,14 @@ using Windows.Devices.Adc;
 using System.Threading.Tasks;
 using Microsoft.IoT.DeviceCore.Sensors;
 using System.Diagnostics;
+using Windows.Devices.Gpio;
 
 namespace TemperatureSensor {
 	public sealed class StartupTask : IBackgroundTask {
+		const int PIN_CHIP_SELECT = 18;
+		const int PIN_CLOCK = 23;
+		const int PIN_DATA = 24;
+
 		public string Output { get; set; }
 
 		public async void Run(IBackgroundTaskInstance taskInstance) {
@@ -25,7 +30,9 @@ namespace TemperatureSensor {
 			webServer.RequestHandler += WebServer_RequestHandler;
 
 			var timeout = DateTime.Now.AddMinutes(5);
-			while (DateTime.Now < timeout) { }
+
+			while (DateTime.Now < timeout)
+				Task.Delay(1000).Wait();
 
 			sensor.Dispose();
 			
@@ -61,9 +68,18 @@ namespace TemperatureSensor {
 
 		async Task<AdcChannel> GetAdcChannelAsync() {
 			var adcManager = new AdcProviderManager();
+			var gpioController = GpioController.GetDefault();
+
+			//adcManager.Providers.Add(
+			//	new MCP3008()
+			//);
 
 			adcManager.Providers.Add(
-				new MCP3008()
+				new ADC0832() {
+					ChipSelectPin = gpioController.OpenPin(PIN_CHIP_SELECT),
+					ClockPin = gpioController.OpenPin(PIN_CLOCK),
+					DataPin = gpioController.OpenPin(PIN_DATA),
+				}
 			);
 
 			var adcControllers = await adcManager.GetControllersAsync();

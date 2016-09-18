@@ -72,12 +72,12 @@ namespace TemperatureSensor {
 			Sensor.Dispose();
 		}
 
-		void Update(AnalogSensorReading reading) {
+		void Update(AnalogSensorReading sensorReading) {
 			var averageRatio = 0D;
 			var totalReads = 5;
 			
-			if (reading != null) {
-				averageRatio = reading.Ratio;
+			if (sensorReading != null) {
+				averageRatio = sensorReading.Ratio;
 				totalReads = 6;
 			}
 
@@ -100,7 +100,9 @@ namespace TemperatureSensor {
 
 			// Update current value
 			lock (CurrentReading) {
-				CurrentReading = new TemperatureReading(Temperature.FromDegreesCelsius(celsius));
+				var temperature = Temperature.FromDegreesCelsius(celsius);
+				var temperatureReading = new TemperatureReading(temperature);
+				CurrentReading = temperatureReading;
 			}
 
 			// Notify
