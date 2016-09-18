@@ -1,25 +1,18 @@
 ﻿using System;
 using Windows.ApplicationModel.Background;
-using System.Threading.Tasks;
 
 namespace Joystick {
-	public sealed class StartupTask : IBackgroundTask
-    {
-		internal static BackgroundTaskDeferral Deferral = null;
-
-		public async void Run(IBackgroundTaskInstance taskInstance)
-        {
-			Deferral = taskInstance.GetDeferral();
+	public sealed class StartupTask : IBackgroundTask {
+		public async void Run(IBackgroundTaskInstance taskInstance) {
+			var deferral = taskInstance.GetDeferral();
 
 			var joystick = new Joystick();
 			await joystick.InitializeAsync();
 
-			while(true) {
-				joystick.UpdateLeds();
-				await Task.Delay(TimeSpan.FromMilliseconds(100));
-			}
+			var timer = DateTime.Now;
+			while (timer < DateTime.Now.AddMinutes(5)) { }
 
-			Deferral.Complete();
+			deferral.Complete();
 		}
 	}
 }

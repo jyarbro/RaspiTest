@@ -8,7 +8,7 @@ using Microsoft.IoT.Devices.Input;
 using Windows.Devices.Gpio;
 
 namespace Joystick {
-	public class Joystick {
+	internal class Joystick {
 		const uint REPORT_INTERVAL = 250;
 
 		const int PIN_LED_LEFT = 17;

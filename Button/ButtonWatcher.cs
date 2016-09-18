@@ -2,7 +2,7 @@
 using Windows.Devices.Gpio;
 
 namespace Button {
-	public class ButtonWatcher {
+	internal class ButtonWatcher {
 		public int Counter { get; set; }
 
 		const int PIN_INPUT = 25;

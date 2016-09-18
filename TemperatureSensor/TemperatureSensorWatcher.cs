@@ -7,7 +7,7 @@ using Microsoft.IoT.Devices.Adc;
 using Microsoft.IoT.Devices.Sensors;
 
 namespace TemperatureSensor {
-	public class TemperatureSensorWatcher {
+	internal class TemperatureSensorWatcher {
 		public GpioController GpioController { get; set; }
 		public string Output { get; set; }
 
