@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Windows.Devices.Adc;
 using Windows.Devices.Adc.Provider;
 using Microsoft.IoT.DeviceCore;
@@ -6,10 +7,9 @@ using Microsoft.IoT.DeviceCore.Sensors;
 using Microsoft.IoT.DeviceHelpers;
 using Microsoft.IoT.Devices.Sensors;
 using UnitsNet;
-using System.Diagnostics;
 
-namespace TemperatureSensor {
-	public sealed class ThermistorSensor : IScheduledDevice {
+namespace Sensors {
+	public sealed class ThermistorSensor : IMyAnalogSensor, IScheduledDevice {
 		const int THERMISTOR_BETA = 3950;
 		const int PULLUP_RESISTANCE = 10000;
 		const double VREF = 3.3;

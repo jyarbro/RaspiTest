@@ -1,22 +1,25 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
-using Microsoft.IoT.DeviceCore.Adc;
-using Microsoft.IoT.DeviceCore.Sensors;
-using Microsoft.IoT.Devices.Adc;
 using Windows.Devices.Adc.Provider;
+using Microsoft.IoT.DeviceCore.Adc;
 
-namespace TemperatureSensor {
-	internal class ThermistorSensorWatcher {
-		ThermistorSensor Sensor { get; } = new ThermistorSensor();
+namespace Sensors {
+	internal class SensorWatcher {
+		IMyAnalogSensor Sensor { get; set; }
+		IAdcControllerProvider ADC { get; set; }
+
+		public SensorWatcher(IMyAnalogSensor sensor, IAdcControllerProvider adc) {
+			Sensor = sensor;
+			ADC = adc;
+		}
 
 		public async Task StartAsync() {
 			var adcManager = new AdcProviderManager();
 
-			Sensor.AdcControllerProvider = new MCP3008();
+			Sensor.AdcControllerProvider = ADC;
 
 			adcManager.Providers.Add(
-				(IAdcProvider)Sensor.AdcControllerProvider
+				(IAdcProvider) ADC
 			);
 
 			var adcControllers = await adcManager.GetControllersAsync();

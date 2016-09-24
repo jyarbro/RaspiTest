@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
-using Services;
 
-namespace TemperatureSensor {
-	public sealed class StartupTask : IBackgroundTask {
+namespace Sensors {
+	public sealed class ExampleWebServerStartupTask : IBackgroundTask {
 		public string Output { get; set; }
 
 		public async void Run(IBackgroundTaskInstance taskInstance) {

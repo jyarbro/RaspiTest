@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 
-namespace Services {
-	public class RaspiWebServer {
+namespace Sensors {
+	internal class RaspiWebServer {
 		public event EventHandler<string> RequestHandler;
 
 		public List<string> ResponseBuffer { get; } = new List<string>();
