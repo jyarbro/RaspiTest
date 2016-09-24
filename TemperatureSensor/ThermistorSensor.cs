@@ -1,28 +1,19 @@
 ﻿using System;
 using Windows.Devices.Adc;
-using Windows.Foundation;
+using Windows.Devices.Adc.Provider;
 using Microsoft.IoT.DeviceCore;
 using Microsoft.IoT.DeviceCore.Sensors;
 using Microsoft.IoT.DeviceHelpers;
 using Microsoft.IoT.Devices.Sensors;
 using UnitsNet;
+using System.Diagnostics;
 
 namespace TemperatureSensor {
-	public sealed class ThermistorSensor : ITemperatureSensor, IScheduledDevice {
+	public sealed class ThermistorSensor : IScheduledDevice {
 		const int THERMISTOR_BETA = 3950;
 		const int PULLUP_RESISTANCE = 10000;
 		const double VREF = 3.3;
 		const double ABSOLUTE_ZERO = 273.15;
-
-		public event TypedEventHandler<ITemperatureSensor, ITemperatureReading> ReadingChanged {
-			add {
-				return _ReadingChanged.Add(value);
-			}
-			remove {
-				_ReadingChanged.Remove(value);
-			}
-		}
-		ObservableEvent<ITemperatureSensor, ITemperatureReading> _ReadingChanged;
 
 		public uint ReportInterval {
 			get {
@@ -43,71 +34,49 @@ namespace TemperatureSensor {
 			}
 		}
 
+		public IAdcControllerProvider AdcControllerProvider { get; set; }
+
 		AnalogSensor Sensor { get; } = new AnalogSensor();
 
-		TemperatureReading CurrentReading { get; set; } = new TemperatureReading(Temperature.Zero);
-
+		int AdcRange { get; set; }
 		bool Initialized { get; set; }
 
-		public ThermistorSensor() {
-			_ReadingChanged = new ObservableEvent<ITemperatureSensor, ITemperatureReading>(firstAdded: OnFirstAdded, lastRemoved: OnLastRemoved);
-		}
-
-		public ITemperatureReading GetCurrentReading() {
+		public void Initialize() {
 			if (Sensor.AdcChannel == null)
 				throw new MissingIoException(nameof(AdcChannel));
 
-			Update(null);
+			AdcRange = AdcChannel.Controller.MaxValue - AdcChannel.Controller.MinValue;
 
-			return CurrentReading;
+			Sensor.ReadingChanged += Sensor_ReadingChanged;
+
+			Initialized = true;
 		}
 
 		public void Dispose() {
 			Sensor.Dispose();
 		}
 
-		public void Initialize() {
+		void Sensor_ReadingChanged(IAnalogSensor sender, AnalogSensorReadingChangedEventArgs args) {
 			if (Sensor.AdcChannel == null)
 				throw new MissingIoException(nameof(AdcChannel));
 
-			Initialized = true;
-		}
-
-		void Update(AnalogSensorReading sensorReading) {
 			if (!Initialized)
 				throw new Exception("Sensor not initialized.");
 
-			// Inspired by https://www.sunfounder.com/learn/sensor-kit-v2-0-for-raspberry-pi-b-plus/lesson-18-temperature-sensor-sensor-kit-v2-0-for-b-plus.html
+			var currentReading = AdcControllerProvider.ReadValue(0);
 
-			var volts = VREF * sensorReading.Value / 255;
+			// Inspired by https://www.sunfounder.com/learn/Sensor-Kit-v1-0-for-Raspberry-Pi/lesson-10-analog-temperature-sensor-sensor-kit-v1-0-for-pi.html
+
+			var volts = VREF * currentReading / AdcRange;
 			var ohms = PULLUP_RESISTANCE * volts / (VREF - volts);
 			var lnOhms = Math.Log(ohms / PULLUP_RESISTANCE);
 
-			var celsius = 1 / ((lnOhms / THERMISTOR_BETA) + (1 / (ABSOLUTE_ZERO + 25)));
+			var celsius = 1 / ((lnOhms / THERMISTOR_BETA) + (1 / (ABSOLUTE_ZERO + (AdcRange / 10))));
 			celsius = celsius - ABSOLUTE_ZERO;
 
-			var temperature = Temperature.FromDegreesCelsius(celsius);
-			var temperatureReading = new TemperatureReading(temperature);
+			var t = Temperature.FromDegreesCelsius(celsius);
 
-			// Update current value
-			lock (CurrentReading) {
-				CurrentReading = temperatureReading;
-			}
-
-			// Notify
-			_ReadingChanged.Raise(this, CurrentReading);
-		}
-
-		void OnFirstAdded() {
-			Sensor.ReadingChanged += Sensor_ReadingChanged;
-		}
-
-		void OnLastRemoved() {
-			Sensor.ReadingChanged -= Sensor_ReadingChanged;
-		}
-
-		void Sensor_ReadingChanged(IAnalogSensor sender, AnalogSensorReadingChangedEventArgs args) {
-			Update(args.Reading);
+			Debug.WriteLine($"F: {t.DegreesFahrenheit}  C: {t.DegreesCelsius}");
 		}
 	}
 }

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemperatureSensor", "Temper
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{CE3123E5-3CB1-49B2-BB2A-E8551F4DC61B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemperatureSensorLowLevel", "TemperatureSensorLowLevel\TemperatureSensorLowLevel.csproj", "{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,26 @@ Global
 		{CE3123E5-3CB1-49B2-BB2A-E8551F4DC61B}.Release|x64.Build.0 = Release|x64
 		{CE3123E5-3CB1-49B2-BB2A-E8551F4DC61B}.Release|x86.ActiveCfg = Release|x86
 		{CE3123E5-3CB1-49B2-BB2A-E8551F4DC61B}.Release|x86.Build.0 = Release|x86
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Debug|ARM.ActiveCfg = Debug|ARM
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Debug|ARM.Build.0 = Debug|ARM
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Debug|ARM.Deploy.0 = Debug|ARM
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Debug|x64.ActiveCfg = Debug|x64
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Debug|x64.Build.0 = Debug|x64
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Debug|x64.Deploy.0 = Debug|x64
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Debug|x86.ActiveCfg = Debug|x86
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Debug|x86.Build.0 = Debug|x86
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Debug|x86.Deploy.0 = Debug|x86
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Release|Any CPU.ActiveCfg = Release|x86
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Release|ARM.ActiveCfg = Release|ARM
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Release|ARM.Build.0 = Release|ARM
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Release|ARM.Deploy.0 = Release|ARM
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Release|x64.ActiveCfg = Release|x64
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Release|x64.Build.0 = Release|x64
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Release|x64.Deploy.0 = Release|x64
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Release|x86.ActiveCfg = Release|x86
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Release|x86.Build.0 = Release|x86
+		{4E1EC4D3-8512-44D0-BC16-33C4001AEBBA}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
