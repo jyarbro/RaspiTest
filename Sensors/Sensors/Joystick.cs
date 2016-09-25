@@ -5,18 +5,20 @@ using Microsoft.IoT.DeviceCore.Adc;
 using Microsoft.IoT.DeviceCore.Input;
 using Microsoft.IoT.Devices.Adc;
 using Microsoft.IoT.Devices.Input;
+using Windows.Devices.Adc.Provider;
 using Windows.Devices.Gpio;
 
-namespace Joystick {
-	internal class Joystick {
-		const uint REPORT_INTERVAL = 250;
-
+namespace Sensors {
+	internal class Joystick : IDisposable {
 		const int PIN_LED_LEFT = 17;
 		const int PIN_LED_MID = 18;
 		const int PIN_LED_RIGHT = 19;
 		const int PIN_BUTTON = 20;
 
-		GpioController GpioController;
+		IAdcControllerProvider Adc { get; set; }
+		GpioController GpioController { get; set; }
+
+		SS944 Stick { get; } = new SS944();
 
 		GpioPin LedLeft;
 		GpioPin LedMid;
@@ -28,29 +30,29 @@ namespace Joystick {
 		public async Task InitializeAsync() {
 			var adcManager = new AdcProviderManager();
 
-			adcManager.Providers.Add(
-				new MCP3008 {
-					ChipSelectLine = 0,
-					ControllerName = "SPI0"
-				}
-			);
+			var adc = new MCP3008();
+			Adc = adc;
+			adcManager.Providers.Add(adc);
 
 			var adcControllers = await adcManager.GetControllersAsync();
+			var adcController = adcControllers[0];
 
-			var thumbstick = new SS944 {
-				XChannel = adcControllers[0].OpenChannel(0),
-				YChannel = adcControllers[0].OpenChannel(1),
-				ButtonPin = GpioController.OpenPin(PIN_BUTTON),
-				ReportInterval = REPORT_INTERVAL,
-			};
-
-			thumbstick.ReadingChanged += Thumbstick_ReadingChanged;
+			Stick.XChannel = adcControllers[0].OpenChannel(0);
+			Stick.YChannel = adcControllers[0].OpenChannel(1);
+			Stick.ButtonPin = GpioController.OpenPin(PIN_BUTTON);
+			Stick.ReadingChanged += Thumbstick_ReadingChanged;
 
 			InitializeLeds();
 		}
 
+		public void Dispose() {
+			Stick.Dispose();
+		}
+
 		void Thumbstick_ReadingChanged(IThumbstick sender, ThumbstickReadingChangedEventArgs args) {
 			X = args.Reading.XAxis;
+			Y = args.Reading.XAxis;
+
 			UpdateLeds();
 		}
 
@@ -72,9 +74,7 @@ namespace Joystick {
 		}
 
 		void UpdateLeds() {
-			// var currentValue = (Channel0 + Channel1) / 2;
-
-			Debug.WriteLine($"X {X}");
+			Debug.WriteLine($"X {X}, Y {Y}");
 
 			if (X < 64) {
 				LedLeft.Write(GpioPinValue.High);

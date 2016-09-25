@@ -96,11 +96,13 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExampleWebServerStartupTask.cs" />
-    <Compile Include="Sensors\IMyAnalogSensor.cs" />
+    <Compile Include="ExampleStartupTasks\ExampleWebServerStartupTask.cs" />
+    <Compile Include="Sensors\Button.cs" />
+    <Compile Include="Sensors\Joystick.cs" />
+    <Compile Include="Sensors\LowLevelThermistorSensor.cs" />
     <Compile Include="Sensors\ThermistorSensor.cs" />
     <Compile Include="Services\RaspiWebServer.cs" />
-    <Compile Include="Services\SensorWatcher.cs" />
+    <Compile Include="ExampleStartupTasks\ExampleThermistorSensorStartupTask.cs" />
     <Compile Include="StartupTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

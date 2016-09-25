@@ -1,12 +1,12 @@
 ﻿using System;
 using Windows.Devices.Gpio;
 
-namespace Button {
-	internal class ButtonWatcher {
-		public int Counter { get; set; }
-
+namespace Sensors {
+	internal class Button {
 		const int PIN_INPUT = 25;
 		const int PIN_OUTPUT = 21;
+
+		public int Counter { get; set; }
 
 		GpioController GpioController;
 		GpioPin InputPin;
